@@ -1,0 +1,122 @@
+<html>
+  <script>
+var sun = new Image();
+var moon = new Image();
+var earth = new Image();
+var keepGoing = false;
+var i = 0;
+var arrayofnumbers = [''];
+var speed = 6000;
+function getPi(){
+  var pi = "3141592653589793238462643383279"; // 30th digit of pi
+  var piSingle = pi.split(""); // creates an array of pi numbers
+  var userInput = document.getElementById('userInput').value; // Gets user input
+  //Checks if user input is correct
+
+
+    console.log(i);
+
+    if (userInput == piSingle[i]) {
+
+      keepGoing = true;
+      console.log("you are right");
+      console.log(i);
+      arrayofnumbers.push(piSingle[i]);
+      document.getElementById('display').innerHTML = arrayofnumbers.join('');
+      i +=1;
+
+
+
+
+
+    } else {
+      keepGoing = false;
+      console.log("You are wrong");
+    }
+
+
+
+}
+
+function init(){
+  sun.src = 'pi.png';
+  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+  earth.src = 'piDot.png';
+  window.requestAnimationFrame(draw);
+}
+
+
+function draw() {
+
+
+  var ctx = document.getElementById('canvas').getContext('2d');
+
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.clearRect(20,20,300,300); // clear canvas
+
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+  ctx.save();
+  ctx.translate(150,150);
+
+  // Earth
+  var time = new Date();
+  if (keepGoing == true) {
+    speed -= .06
+
+    console.log("this is showing when");
+    ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/speed)*time.getMilliseconds() );
+    ctx.translate(105,0);
+    //ctx.fillRect(0,-12,50,24); // Shadow
+    ctx.drawImage(earth,-12,-12);
+    ctx.restore();
+
+  }
+  else {
+    speed += .06;
+    ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/speed)*time.getMilliseconds() );
+    ctx.translate(105,0);
+    //ctx.fillRect(0,-12,50,24); // Shadow
+    ctx.drawImage(earth,-12,-12);
+    ctx.restore()
+
+
+  }
+
+
+  // Moon
+  /*ctx.save();
+  ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
+  ctx.translate(0,28.5);
+  ctx.drawImage(moon,-3.5,-3.5);
+  ctx.restore();
+*/
+
+
+  ctx.beginPath();
+  ctx.arc(150,150,260,0,Math.PI*2,false); // Earth orbit
+  ctx.stroke();
+
+  ctx.drawImage(sun,0,0,300,300);
+
+  window.requestAnimationFrame(draw);
+}
+
+
+init();
+
+  </script>
+
+  <body>
+      <canvas id="canvas" width="600" height="600">
+      </canvas>
+    <div class="game">
+      <h1 id="display"></h1>
+      <input type="text" id="userInput">
+      <button onclick="getPi()" autofocus> Go </button>
+
+
+    </div>
+    </div>
+  </body>
+</html>
